@@ -12,4 +12,5 @@ func main() {
 
 	fmt.Println(louis.NumClient())
 	fmt.Println(louis.ClientIPList())
+	fmt.Println(louis.ClientIPList())
 }

@@ -11,6 +11,8 @@ import (
 
 var clients = []*http.Client{}
 var clientNum = 0
+var clientCacheFlag = false
+var ips []string
 
 func NewTorClient(host string, port string) *http.Client {
 	url := "socks5://" + host + ":" + port
@@ -18,6 +20,7 @@ func NewTorClient(host string, port string) *http.Client {
 }
 
 func NewProxyClient(u string) *http.Client {
+	clientCacheFlag = false
 	tbProxyURL, err := url.Parse(u)
 	if err != nil {
 		return nil
@@ -63,6 +66,9 @@ func NumClient() int {
 }
 
 func ClientIPList() []string {
+	if clientCacheFlag {
+		return ips
+	}
 	ret := []string{}
 
 	for _, c := range clients {
@@ -83,5 +89,7 @@ func ClientIPList() []string {
 		ret = append(ret, result)
 	}
 
+	clientCacheFlag = true
+	ips = ret
 	return ret
 }
