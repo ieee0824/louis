@@ -14,6 +14,17 @@ var clientNum = 0
 var clientCacheFlag = false
 var ips []string
 
+type Client struct {
+}
+
+func NewClient() *Client {
+	return &Client{}
+}
+
+func (c *Client) Do(req *http.Request) (*http.Response, error) {
+	return getClient().Do(req)
+}
+
 func NewTorClient(host string, port string) *http.Client {
 	url := "socks5://" + host + ":" + port
 	return NewProxyClient(url)
@@ -47,7 +58,7 @@ func getClient() *http.Client {
 	return clients[clientNum-1]
 }
 
-func client(req <-chan *http.Request, resp chan<- *http.Response) {
+func ClientPipe(req <-chan *http.Request, resp chan<- *http.Response) {
 	go func() {
 		for {
 			select {
